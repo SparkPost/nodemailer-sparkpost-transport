@@ -1,0 +1,32 @@
+{
+  "name": "nodemailer-sparkpost-transport",
+  "version": "0.1.0",
+  "description": "SparkPost transport for Nodemailer",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:SparkPost/nodemailer-sparkpost-transport.git"
+  },
+  "keywords": [
+    "nodemailer",
+    "sparkpost"
+  ],
+  "author": "SparkPost",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/SparkPost/nodemailer-sparkpost-transport/issues"
+  },
+  "homepage": "https://github.com/SparkPost/nodemailer-sparkpost-transport",
+  "dependencies": {
+    "email-addresses": "^2.0.1",
+    "sparkpost-api": "^1.0.41"
+  },
+  "devDependencies": {
+    "chai": "^2.2.0",
+    "mocha": "^2.2.1",
+    "sinon": "^1.14.1"
+  }
+}
