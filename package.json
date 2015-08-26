@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/SparkPost/nodemailer-sparkpost-transport",
   "dependencies": {
+    "dotenv": "^1.2.0",
     "email-addresses": "^2.0.1",
     "sparkpost": "^1.1.0"
   },
