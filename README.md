@@ -39,7 +39,7 @@ var transporter = nodemailer.createTransport(sparkpostTransport({
 }));
 
 
-transport.send({
+transport.sendMail({
   "recipients": [
     {
       "address": {
