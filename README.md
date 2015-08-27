@@ -68,8 +68,11 @@ sparkpostTransport(options);
 #### Available options
 
 + `tags`
-+ `meta`
-+ `rcpt_metadata`
++ `metadata`
++ `campaign_id`
++ `content`
++ `options`
++ `substitution_data`
 
 ### `sendMail`
 
@@ -79,14 +82,10 @@ transport.sendMail(options, function(err, info) {});
 
 #### Available options
 
-+ `to`
-+ `cc`
-+ `bcc`
-+ `from`
-+ `subject`
-+ `headers`
-+ `text`
-+ `html`
++ `options`
++ `content`
++ `campaign_id`
++ `substitution_data`
++ `recipients`
 + `tags`
-+ `meta`
-+ `rcpt_metadata`
++ `metadata`
