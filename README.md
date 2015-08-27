@@ -13,21 +13,42 @@ var nodemailer = require('nodemailer');
 
 var sparkpostTransport = require('nodemailer-sparkpost-transport');
 
-var transport = nodemailer.createTransport(sparkpostTransport({
-  auth: {
-    apiKey: 'key'
+var nodemailer = require('nodemailer');
+var sparkpostTransport = require('nodemailer-sparkpost-transport');
+// Will use dotenv to load .env variables, passing in options to send with SparkPost
+var transporter = nodemailer.createTransport(sparkpostTransport({
+  "options": {
+    "open_tracking": true,
+    "click_tracking": true,
+    "transactional": true
+  },  
+  "campaign_id": "Nodemailer Default",
+  "metadata": {
+    "some_useful_metadata": "testing_sparkpost"
+  },  
+  "substitution_data": {
+    "sender": "YOUR NAME",
+    "fullName": "YOUR NAME",
+    "productName": "The coolest product ever",
+    "sparkpostSupportEmail": "support@sparkpost.com",
+    "sparkpostSupportPhone": "123-456-7890"
+  },  
+  "content": {
+    "template_id": "ADD YOUR TEMPLATE ID HERE"
   }
 }));
 
-var emailBody = {
-  from: 'sender@example.com',
-  to: 'user@example.com',
-  subject: 'Greetings',
-  html: '<p>I'm Sparky! How are you?</p>',
-  text: 'I'm Sparky! How are you?'
-};
 
-transport.sendMail(emailBody, function(err, info) {
+transport.send({
+  "recipients": [
+    {
+      "address": {
+        "email": "CHANGE TO YOUR TARGET TEST EMAIL",
+        "name": "CHANGE TO YOUR RECIPIENT NAME"
+      }
+    }
+  ]
+}, function(err, info) {
   if (err) {
     console.error(err);
   } else {
