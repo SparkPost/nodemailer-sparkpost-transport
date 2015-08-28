@@ -4,7 +4,8 @@
   "description": "SparkPost transport for Nodemailer",
   "main": "lib/sparkPostTransport.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "release": "with-package git commit -am pkg.version && with-package git tag pkg.version && git push upstream && npm publish && git push --tags upstream"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
   "devDependencies": {
     "chai": "^2.2.0",
     "mocha": "^2.2.1",
-    "sinon": "^1.14.1"
+    "sinon": "^1.14.1",
+    "with-package": "^0.2.0"
   }
 }
