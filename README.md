@@ -1,8 +1,15 @@
 # nodemailer-sparkpost-transport
-Sparkpost transport for Nodemailer
+
+SparkPost transport for Nodemailer
 
 [![Build Status](https://travis-ci.org/Sparkpost/nodemailer-sparkpost-transport.svg?branch=sm-readme)](https://travis-ci.org/Sparkpost/nodemailer-sparkpost-transport)
 [![NPM version](https://badge.fury.io/js/nodemailer-sparkpost-transport.png)](http://badge.fury.io/js/nodemailer-sparkpost-transport)
+
+## Installation
+
+```
+npm install nodemailer-sparkpost-transport
+```
 
 ## Example
 
@@ -21,18 +28,18 @@ var transporter = nodemailer.createTransport(sparkpostTransport({
     "open_tracking": true,
     "click_tracking": true,
     "transactional": true
-  },  
+  },
   "campaign_id": "Nodemailer Default",
   "metadata": {
     "some_useful_metadata": "testing_sparkpost"
-  },  
+  },
   "substitution_data": {
     "sender": "YOUR NAME",
     "fullName": "YOUR NAME",
     "productName": "The coolest product ever",
     "sparkpostSupportEmail": "support@sparkpost.com",
     "sparkpostSupportPhone": "123-456-7890"
-  },  
+  },
   "content": {
     "template_id": "ADD YOUR TEMPLATE ID HERE"
   }
