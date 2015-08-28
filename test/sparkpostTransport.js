@@ -3,15 +3,15 @@
 var sinon = require("sinon");
 var expect = require("chai").expect;
 
-var sparkpostTransport = require("../");
+var sparkPostTransport = require("../lib/sparkPostTransport.js");
 
 var pkg = require("../package.json");
 
-describe("SparkPost Transport Tests", function() {
-  var transport = sparkpostTransport();
+describe("SparkPost Transport", function() {
+  var transport = sparkPostTransport({sparkPostApiKey: "12345678901234567890"});
 
   it("should have a name and version property", function(done) {
-    expect(transport).to.have.property("name", "Sparkpost");
+    expect(transport).to.have.property("name", "SparkPost");
     expect(transport).to.have.property("version", pkg.version);
     done();
   });
@@ -23,7 +23,8 @@ describe("SparkPost Transport Tests", function() {
   });
 
   it("should be able to set options", function(done) {
-    var transport = sparkpostTransport({
+    var transport = sparkPostTransport({
+      sparkPostApiKey: "12345678901234567890",
       campaign_id: "sample_campaign",
       tags: ["new-account-notification"],
       metadata: {"source": "event"},
@@ -50,7 +51,8 @@ describe("Send Method", function() {
 
   it("should be able to overload options at the transmission", function(done) {
     // Create the default transport
-    var transport = sparkpostTransport({
+    var transport = sparkPostTransport({
+      sparkPostApiKey: "12345678901234567890",
       campaign_id: "sample_campaign",
       tags: ["new-account-notification"],
       metadata: {"source": "event"},
@@ -61,7 +63,7 @@ describe("Send Method", function() {
     });
 
     // Stub the send method of the SDK out
-    var stub = sinon.stub(transport, "send", function(data, resolve) {
+    sinon.stub(transport, "send", function(data, resolve) {
       // Grab the transmissionBody from the send() payload for assertions
       expect(data.campaign_id).to.equal("another_sample_campaign");
       expect(data.tags).to.deep.equal(["alternative-tag"]);

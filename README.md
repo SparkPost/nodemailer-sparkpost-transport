@@ -17,13 +17,10 @@ npm install nodemailer-sparkpost-transport
 'use strict';
 
 var nodemailer = require('nodemailer');
+var sparkPostTransport = require('nodemailer-sparkpost-transport');
 
-var sparkpostTransport = require('nodemailer-sparkpost-transport');
-
-var nodemailer = require('nodemailer');
-var sparkpostTransport = require('nodemailer-sparkpost-transport');
 // Will use dotenv to load .env variables, passing in options to send with SparkPost
-var transporter = nodemailer.createTransport(sparkpostTransport({
+var transporter = nodemailer.createTransport(sparkPostTransport({
   "options": {
     "open_tracking": true,
     "click_tracking": true,
@@ -66,14 +63,15 @@ transport.sendMail({
 
 ## Documentation
 
-### `sparkpostTransport`
+### `sparkPostTransport`
 
 ```javascript
-sparkpostTransport(options);
+sparkPostTransport(options);
 ```
 
 #### Available options
 
++ `sparkPostApiKey`
 + `tags`
 + `metadata`
 + `campaign_id`
