@@ -3,7 +3,7 @@
 SparkPost transport for Nodemailer
 
 [![Build Status](https://travis-ci.org/SparkPost/nodemailer-sparkpost-transport.svg?branch=master)](https://travis-ci.org/Sparkpost/nodemailer-sparkpost-transport)
-[![NPM version](https://badge.fury.io/js/nodemailer-sparkpost-transport.png)](http://badge.fury.io/js/nodemailer-sparkpost-transport)
+[![NPM version](https://badge.fury.io/js/nodemailer-sparkpost-transport.png)](http://badge.fury.io/js/nodemailer-sparkpost-transport) [![Slack Status](http://slack.sparkpost.com/badge.svg)](http://slack.sparkpost.com)
 
 ## Installation
 
