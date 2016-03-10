@@ -71,13 +71,13 @@ sparkPostTransport(options);
 
 #### Available options
 
-+ `sparkPostApiKey`
-+ `tags`
-+ `metadata`
 + `campaign_id`
 + `content`
++ `metadata`
 + `options`
++ `sparkPostApiKey`
 + `substitution_data`
++ `tags`
 
 ### `sendMail`
 
@@ -87,10 +87,10 @@ transport.sendMail(options, function(err, info) {});
 
 #### Available options
 
-+ `options`
-+ `content`
 + `campaign_id`
-+ `substitution_data`
-+ `recipients`
-+ `tags`
++ `content`
 + `metadata`
++ `options`
++ `recipients`
++ `substitution_data`
++ `tags`
