@@ -5,11 +5,56 @@ SparkPost transport for Nodemailer
 [![Build Status](https://travis-ci.org/SparkPost/nodemailer-sparkpost-transport.svg?branch=master)](https://travis-ci.org/Sparkpost/nodemailer-sparkpost-transport)
 [![NPM version](https://badge.fury.io/js/nodemailer-sparkpost-transport.png)](http://badge.fury.io/js/nodemailer-sparkpost-transport) [![Slack Status](http://slack.sparkpost.com/badge.svg)](http://slack.sparkpost.com)
 
-## Installation
+## Usage
+
+Install with npm
 
 ```
 npm install nodemailer-sparkpost-transport
 ```
+
+Require to your script
+
+```javascript
+var nodemailer = require('nodemailer');
+var sparkPostTransport = require('nodemailer-sparkpost-transport');
+```
+
+Create a Nodemailer transport object
+
+```javascript
+var transporter = nodemailer.createTransport(sparkPostTransport(options))
+```
+
+Where
+
+  - **options** defines connection and message data
+    - `sparkPostApiKey` - SparkPost [API Key](https://app.sparkpost.com/account/credentials). If not provided, it will use the `SPARKPOST_API_KEY` env var.
+    - `campaign_id` - Name of the campaign
+    - `content` - Content that will be used to construct a message
+    - `metadata` - Transmission level metadata containing key/value pairs
+    - `options` - JSON object in which transmission options are defined
+    - `substitution_data` - Key/value pairs that are provided to the substitution engine
+
+  For more information, see the [SparkPost API Documentation for Transmissions](https://developers.sparkpost.com/api/#/reference/transmissions)
+
+
+
+Send a message
+
+```javascript
+transport.sendMail(options, function(err, info) {});
+```
+
+Where
+
+  - **options** defines connection and message data
+    - `recipients` - Inline recipient objects or object containing stored recipient list ID. See [SparkPost API Documentation for Recipient Lists](https://developers.sparkpost.com/api/#/reference/recipient-lists) for more information.
+    - `campaign_id` - Override for option above
+    - `content` - Override for option above
+    - `metadata` - Override for option above
+    - `options` - Override for option above
+    - `substitution_data` - Override for option above
 
 ## Example
 
@@ -19,8 +64,8 @@ npm install nodemailer-sparkpost-transport
 var nodemailer = require('nodemailer');
 var sparkPostTransport = require('nodemailer-sparkpost-transport');
 
-// Will use dotenv to load .env variables, passing in options to send with SparkPost
 var transporter = nodemailer.createTransport(sparkPostTransport({
+  "sparkPostApiKey": "<YOUR_API_KEY>",
   "options": {
     "open_tracking": true,
     "click_tracking": true,
@@ -60,37 +105,3 @@ transporter.sendMail({
   }
 });
 ```
-
-## Documentation
-
-### `sparkPostTransport`
-
-```javascript
-sparkPostTransport(options);
-```
-
-#### Available options
-
-+ `campaign_id`
-+ `content`
-+ `metadata`
-+ `options`
-+ `sparkPostApiKey`
-+ `substitution_data`
-+ `tags`
-
-### `sendMail`
-
-```javascript
-transport.sendMail(options, function(err, info) {});
-```
-
-#### Available options
-
-+ `campaign_id`
-+ `content`
-+ `metadata`
-+ `options`
-+ `recipients`
-+ `substitution_data`
-+ `tags`
