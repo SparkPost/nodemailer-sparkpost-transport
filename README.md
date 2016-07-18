@@ -46,7 +46,7 @@ transport.sendMail({
   if (err) {
     console.log('Error: ' + err);
   } else {
-    console.log('Success': ' + info);
+    console.log('Success: ' + info);
 });
 ```
 
