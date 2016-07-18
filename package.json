@@ -27,6 +27,7 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^2.4.5",
+    "nodemailer": "^2.5.0",
     "sinon": "^1.17.4",
     "with-package": "^0.2.0"
   }
