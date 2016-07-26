@@ -6,7 +6,7 @@
   "scripts": {
     "pretest": "eslint examples lib test *.js",
     "test": "mocha",
-    "release": "with-package git commit -am pkg.version && with-package git tag pkg.version && git push upstream && npm publish && git push --tags upstream"
+    "release": "with-package git commit -am pkg.version && with-package git tag pkg.version && git push upstream && git push --tags upstream"
   },
   "repository": {
     "type": "git",
