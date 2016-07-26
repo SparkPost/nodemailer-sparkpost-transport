@@ -1,6 +1,6 @@
 {
   "name": "nodemailer-sparkpost-transport",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "description": "SparkPost transport for Nodemailer",
   "main": "lib/sparkPostTransport.js",
   "scripts": {
