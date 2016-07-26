@@ -23,10 +23,9 @@ var transporter = nodemailer.createTransport(sparkPostTransport(options))
 
 where:
 
-  - **options** defines connection _default_ message properties
+  - **options** defines connection _default_ transmission properties
     - `sparkPostApiKey` - SparkPost [API Key](https://app.sparkpost.com/account/credentials). If not provided, it will use the `SPARKPOST_API_KEY` env var.
     - `campaign_id` - Name of the campaign (optional)
-    - `content` - Content that will be used to construct a message (optional)
     - `metadata` - Transmission level metadata containing key/value pairs (optional)
     - `options` - JSON object in which transmission options are defined (optional)
     - `substitution_data` - Key/value pairs that are provided to the substitution engine (optional)
