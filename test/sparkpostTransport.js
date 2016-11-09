@@ -195,6 +195,32 @@ describe('Send Method', function() {
       });
     });
 
+    it('should accept from as a string', function(done) {
+      mail.from = 'me@here.com';
+      transport.sendMail(mail, function() {
+        var trans = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0].transmissionBody;
+        expect(trans.content.from).to.be.a('string');
+        done();
+      });
+    });
+
+    it('should accept from as an object', function(done) {
+      mail.from = {
+        name: 'Me',
+        address: 'me@here.com'
+      };
+
+      transport.sendMail(mail, function() {
+        var trans = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0].transmissionBody;
+        expect(trans.content.from).to.be.an('object');
+        expect(trans.content.from).to.have.property('name');
+        expect(trans.content.from.name).to.equal(mail.from.name);
+        expect(trans.content.from).to.have.property('email');
+        expect(trans.content.from.email).to.equal(mail.from.address);
+        done();
+      });
+    });
+
     it('should accept to as an array', function(done) {
       mail.to = [rcp1, rcp2];
       transport.sendMail(mail, function() {
