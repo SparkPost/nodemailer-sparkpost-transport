@@ -6,7 +6,7 @@
   "scripts": {
     "pretest": "eslint examples lib test *.js",
     "test": "mocha",
-    "release": "with-package git commit -am pkg.version && with-package git tag pkg.version && git push upstream && git push --tags upstream"
+    "postversion": "git push upstream && git push --tags upstream"
   },
   "repository": {
     "type": "git",
@@ -23,15 +23,14 @@
   },
   "homepage": "https://github.com/SparkPost/nodemailer-sparkpost-transport",
   "dependencies": {
-    "sparkpost": "^1.3.5"
+    "sparkpost": "^1.3.8"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "eslint": "=3.0.0",
+    "eslint": "^3.9.1",
     "eslint-config-sparkpost": "^1.0.1",
-    "mocha": "^2.4.5",
+    "mocha": "^3.1.2",
     "nodemailer": "^2.5.0",
-    "sinon": "^1.17.4",
-    "with-package": "^0.2.0"
+    "sinon": "^1.17.6"
   }
 }
