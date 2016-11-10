@@ -78,7 +78,7 @@ describe('Send Method', function() {
 
       // Stub the send method of the SDK out
       sinon.stub(transport, 'send', function(data, resolve) {
-        // Grab the transmissionBody from the send() payload for assertions
+        // Grab the transmission body from the send() payload for assertions
         expect(data.campaign_id).to.equal('another_sample_campaign');
         expect(data.tags).to.deep.equal(['alternative-tag']);
         expect(data.metadata).to.deep.equal({'changedKey': 'value'});
@@ -117,10 +117,8 @@ describe('Send Method', function() {
       , rcp2;
 
     function checkTo(done) {
-      var req = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0]
-        , transBody = req.transmissionBody;
+      var transBody = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0];
 
-      expect(req).to.have.keys('transmissionBody');
       expect(transBody).to.have.keys(['recipients', 'content']);
       expect(transBody.recipients).to.have.length(2);
       expect(transBody.recipients[0]).to.deep.equal({ address: rcp1 });
@@ -157,10 +155,8 @@ describe('Send Method', function() {
 
     it('should accept basic nodemailer mail content fields', function(done) {
       transport.sendMail(mail, function() {
-        var req = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0]
-          , transBody = req.transmissionBody;
+        var transBody = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0];
 
-        expect(req).to.have.keys('transmissionBody');
         expect(transBody).to.have.keys(['recipients', 'content']);
         expect(transBody.content.html).to.equal(mail.html);
         expect(transBody.content.text).to.equal(mail.text);
@@ -181,16 +177,40 @@ describe('Send Method', function() {
       delete mail.from;
       mail.raw = 'rawmsg';
       transport.sendMail(mail, function() {
-        var req = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0]
-          , transBody = req.transmissionBody;
+        var transBody = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0];
 
-        expect(req).to.have.keys('transmissionBody');
         expect(transBody).to.have.keys(['recipients', 'content']);
         expect(transBody.content).to.have.keys('email_rfc822');
         expect(transBody.recipients).to.have.length(1);
         expect(transBody.recipients[0]).to.have.keys('address');
         expect(transBody.recipients[0].address).to.be.a('string');
         expect(transBody.recipients[0].address).to.equal(mail.to);
+        done();
+      });
+    });
+
+    it('should accept from as a string', function(done) {
+      mail.from = 'me@here.com';
+      transport.sendMail(mail, function() {
+        var trans = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0];
+        expect(trans.content.from).to.be.a('string');
+        done();
+      });
+    });
+
+    it('should accept from as an object', function(done) {
+      mail.from = {
+        name: 'Me',
+        address: 'me@here.com'
+      };
+
+      transport.sendMail(mail, function() {
+        var trans = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0];
+        expect(trans.content.from).to.be.an('object');
+        expect(trans.content.from).to.have.property('name');
+        expect(trans.content.from.name).to.equal(mail.from.name);
+        expect(trans.content.from).to.have.property('email');
+        expect(trans.content.from.email).to.equal(mail.from.address);
         done();
       });
     });
