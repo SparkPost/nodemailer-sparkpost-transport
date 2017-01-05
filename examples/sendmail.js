@@ -1,17 +1,17 @@
 'use strict';
 
 /* eslint-disable no-console */
-var nodemailer = require('nodemailer')
-  , sparkPostTransport = require('nodemailer-sparkpost-transport')
-  , transporter = nodemailer.createTransport(sparkPostTransport({
-    'sparkPostApiKey': '<YOUR_API_KEY>',
-    'options': {
-      'open_tracking': true,
-      'click_tracking': true,
-      'transactional': true
-    },
-    'campaign_id': 'Nodemailer Demo'
-  }));
+const nodemailer = require('nodemailer');
+const sparkPostTransport = require('nodemailer-sparkpost-transport');
+const transporter = nodemailer.createTransport(sparkPostTransport({
+  'sparkPostApiKey': '<YOUR_API_KEY>',
+  'options': {
+    'open_tracking': true,
+    'click_tracking': true,
+    'transactional': true
+  },
+  'campaign_id': 'Nodemailer Demo'
+}));
 
 transporter.sendMail({
   from: 'me@example.com',
