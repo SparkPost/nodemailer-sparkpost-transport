@@ -1,13 +1,13 @@
 'use strict';
 
-var sinon = require('sinon')
-  , expect = require('chai').expect
-  , nodemailer = require('nodemailer')
-  , sparkPostTransport = require('../lib/sparkPostTransport.js')
-  , pkg = require('../package.json');
+const sinon = require('sinon');
+const expect = require('chai').expect;
+const nodemailer = require('nodemailer');
+const sparkPostTransport = require('../lib/sparkPostTransport.js');
+const pkg = require('../package.json');
 
 describe('SparkPost Transport', function() {
-  var transport = sparkPostTransport({sparkPostApiKey: '12345678901234567890'});
+  const transport = sparkPostTransport({sparkPostApiKey: '12345678901234567890'});
 
   it('should have a name and version property', function(done) {
     expect(transport).to.have.property('name', 'SparkPost');
@@ -22,7 +22,7 @@ describe('SparkPost Transport', function() {
   });
 
   it('should be able to set options', function(done) {
-    var transport = sparkPostTransport({
+    const transport = sparkPostTransport({
       sparkPostApiKey: '12345678901234567890',
       campaign_id: 'sample_campaign',
       tags: ['new-account-notification'],
@@ -51,34 +51,35 @@ describe('Send Method', function() {
   describe('SP-centric mail structure', function() {
     it('should be able to overload options at the transmission', function(done) {
       // Create the default transport
-      var transport = sparkPostTransport({
-          sparkPostApiKey: '12345678901234567890',
-          campaign_id: 'sample_campaign',
-          tags: ['new-account-notification'],
-          metadata: {'source': 'event'},
-          substitution_data: {'salutatory': 'Welcome to SparkPost!'},
-          options: {'click_tracking': true, 'open_tracking': true},
-          content: {'template_id': 'newAccountNotification'},
-          recipients: [{'email': 'john.doe@example.com', 'name': 'John Doe'}]
-        })
+      const transport = sparkPostTransport({
+        sparkPostApiKey: '12345678901234567890',
+        campaign_id: 'sample_campaign',
+        tags: ['new-account-notification'],
+        metadata: {'source': 'event'},
+        substitution_data: {'salutatory': 'Welcome to SparkPost!'},
+        options: {'click_tracking': true, 'open_tracking': true},
+        content: {'template_id': 'newAccountNotification'},
+        recipients: [{'email': 'john.doe@example.com', 'name': 'John Doe'}]
+      });
+
         // Create the modified options for use with the above stub test
-        , overloadedTransmission = {
-          campaign_id: 'another_sample_campaign',
-          tags: ['alternative-tag'],
-          metadata: {'changedKey': 'value'},
-          substitution_data: {'salutatory': 'And now...for something completely different'},
-          options: {'click_tracking': false, 'open_tracking': false, 'transactional': true},
-          recipients: [{
-            list_id: 'myStoredRecipientTestList'
-          }],
-          content: {
-            template_id: 'someOtherTemplate'
-          }
-        };
+      const overloadedTransmission = {
+        campaign_id: 'another_sample_campaign',
+        tags: ['alternative-tag'],
+        metadata: {'changedKey': 'value'},
+        substitution_data: {'salutatory': 'And now...for something completely different'},
+        options: {'click_tracking': false, 'open_tracking': false, 'transactional': true},
+        recipients: [{
+          list_id: 'myStoredRecipientTestList'
+        }],
+        content: {
+          template_id: 'someOtherTemplate'
+        }
+      };
 
       // Stub the send method of the SDK out
       sinon.stub(transport, 'send', function(data, resolve) {
-        // Grab the transmissionBody from the send() payload for assertions
+        // Grab the transmission body from the send() payload for assertions
         expect(data.campaign_id).to.equal('another_sample_campaign');
         expect(data.tags).to.deep.equal(['alternative-tag']);
         expect(data.metadata).to.deep.equal({'changedKey': 'value'});
@@ -110,22 +111,23 @@ describe('Send Method', function() {
   });
 
   describe('conventional nodemailer mail structure', function() {
-    var sptrans
+    let sptrans
       , transport
       , mail
       , rcp1
       , rcp2;
 
-    function checkTo(done) {
-      var req = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0]
-        , transBody = req.transmissionBody;
+    function checkRecipientsFromFld(mail, infld, val, outfld, done) {
+      mail[infld] = val;
+      transport.sendMail(mail, function() {
+        const transBody = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0];
 
-      expect(req).to.have.keys('transmissionBody');
-      expect(transBody).to.have.keys(['recipients', 'content']);
-      expect(transBody.recipients).to.have.length(2);
-      expect(transBody.recipients[0]).to.deep.equal({ address: rcp1 });
-      expect(transBody.recipients[1]).to.deep.equal({ address: rcp2 });
-      done();
+        expect(transBody).to.include.keys(['recipients', 'content']);
+        expect(transBody[outfld]).to.have.length(2);
+        expect(transBody[outfld][0]).to.deep.equal({ address: rcp1 });
+        expect(transBody[outfld][1]).to.deep.equal({ address: rcp2 });
+        done();
+      });
     }
 
     beforeEach(function() {
@@ -157,10 +159,8 @@ describe('Send Method', function() {
 
     it('should accept basic nodemailer mail content fields', function(done) {
       transport.sendMail(mail, function() {
-        var req = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0]
-          , transBody = req.transmissionBody;
+        const transBody = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0];
 
-        expect(req).to.have.keys('transmissionBody');
         expect(transBody).to.have.keys(['recipients', 'content']);
         expect(transBody.content.html).to.equal(mail.html);
         expect(transBody.content.text).to.equal(mail.text);
@@ -181,10 +181,8 @@ describe('Send Method', function() {
       delete mail.from;
       mail.raw = 'rawmsg';
       transport.sendMail(mail, function() {
-        var req = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0]
-          , transBody = req.transmissionBody;
+        const transBody = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0];
 
-        expect(req).to.have.keys('transmissionBody');
         expect(transBody).to.have.keys(['recipients', 'content']);
         expect(transBody.content).to.have.keys('email_rfc822');
         expect(transBody.recipients).to.have.length(1);
@@ -198,7 +196,7 @@ describe('Send Method', function() {
     it('should accept from as a string', function(done) {
       mail.from = 'me@here.com';
       transport.sendMail(mail, function() {
-        var trans = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0].transmissionBody;
+        const trans = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0];
         expect(trans.content.from).to.be.a('string');
         done();
       });
@@ -211,7 +209,7 @@ describe('Send Method', function() {
       };
 
       transport.sendMail(mail, function() {
-        var trans = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0].transmissionBody;
+        const trans = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0];
         expect(trans.content.from).to.be.an('object');
         expect(trans.content.from).to.have.property('name');
         expect(trans.content.from.name).to.equal(mail.from.name);
@@ -222,17 +220,27 @@ describe('Send Method', function() {
     });
 
     it('should accept to as an array', function(done) {
-      mail.to = [rcp1, rcp2];
-      transport.sendMail(mail, function() {
-        checkTo(done);
-      });
+      checkRecipientsFromFld(mail, 'to', [rcp1, rcp2], 'recipients', done);
     });
 
     it('should accept to as a string', function(done) {
-      mail.to = [rcp1, rcp2].join(',');
-      transport.sendMail(mail, function() {
-        checkTo(done);
-      });
+      checkRecipientsFromFld(mail, 'to', [rcp1, rcp2].join(','), 'recipients', done);
+    });
+
+    it('should accept cc as an array', function(done) {
+      checkRecipientsFromFld(mail, 'cc', [rcp1, rcp2], 'cc', done);
+    });
+
+    it('should accept cc as a string', function(done) {
+      checkRecipientsFromFld(mail, 'cc', [rcp1, rcp2].join(','), 'cc', done);
+    });
+
+    it('should accept bcc as an array', function(done) {
+      checkRecipientsFromFld(mail, 'bcc', [rcp1, rcp2], 'bcc', done);
+    });
+
+    it('should accept bcc as a string', function(done) {
+      checkRecipientsFromFld(mail, 'bcc', [rcp1, rcp2].join(','), 'bcc', done);
     });
   });
 });
