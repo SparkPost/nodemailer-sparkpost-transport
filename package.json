@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/SparkPost/nodemailer-sparkpost-transport",
   "dependencies": {
-    "sparkpost": "^2.0.1"
+    "sparkpost": "^2.1.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
