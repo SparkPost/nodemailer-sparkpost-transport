@@ -3,11 +3,19 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.0.0] - 2017/01/06 *breaking*
+With this major release, we are now using the latest 2.x version of the node-sparkpost library.
+This removes support for versions of Node.js below 4.0.
+
 ### Added
 - Populate node-sparkpost's stackIdentity option
 
 ### Updated
-- Updated to `sparkpost@2.0.1`.
+- Updated to [`sparkpost@2.1.0`](https://github.com/SparkPost/node-sparkpost/).
+
+### Removed
+- No longer supporting Node.js versions 0.10 & 0.12. We will be following the [LTS Schedule](https://github.com/nodejs/LTS) going forward.
 
 ## [1.1.0] - 2016/11/10
 ### Added
