@@ -44,7 +44,8 @@ This removes support for versions of Node.js below 4.0.
 ## 0.1.0 - 2015/08/28
 - Initial release
 
-[Unreleased]: https://github.com/SparkPost/nodemailer-sparkpost-transport/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/SparkPost/nodemailer-sparkpost-transport/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/SparkPost/nodemailer-sparkpost-transport/compare/1.1.0...v2.0.0
 [1.1.0]: https://github.com/SparkPost/nodemailer-sparkpost-transport/compare/1.0.0...v1.1.0
 [1.0.0]: https://github.com/SparkPost/nodemailer-sparkpost-transport/compare/0.1.2...1.0.0
 [0.1.2]: https://github.com/SparkPost/nodemailer-sparkpost-transport/compare/0.1.1...0.1.2
