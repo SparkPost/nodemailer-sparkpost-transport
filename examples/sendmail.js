@@ -1,9 +1,9 @@
 'use strict';
 
 /* eslint-disable no-console */
-const nodemailer = require('nodemailer');
-const sparkPostTransport = require('nodemailer-sparkpost-transport');
-const transporter = nodemailer.createTransport(sparkPostTransport({
+const nodemailer = require('nodemailer')
+, sparkPostTransport = require('nodemailer-sparkpost-transport')
+, transporter = nodemailer.createTransport(sparkPostTransport({
   'sparkPostApiKey': '<YOUR_API_KEY>',
   'options': {
     'open_tracking': true,

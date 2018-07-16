@@ -21,13 +21,14 @@ npm install nodemailer-sparkpost-transport
 ```javascript
 var nodemailer = require('nodemailer');
 var sparkPostTransport = require('nodemailer-sparkpost-transport');
-var transporter = nodemailer.createTransport(sparkPostTransport(options))
+var transporter = nodemailer.createTransport(sparkPostTransport(options));
 ```
 
 where:
 
   - **options** defines connection _default_ transmission properties
     - `sparkPostApiKey` - SparkPost [API Key](https://app.sparkpost.com/account/credentials). If not provided, it will use the `SPARKPOST_API_KEY` env var.
+    - `endpoint` - The endpoint to use for the SparkPost API requests. If you have a SparkPost EU account, set this to `https://api.eu.sparkpost.com` (optional)
     - `campaign_id` - Name of the campaign (optional)
     - `metadata` - Transmission level metadata containing key/value pairs (optional)
     - `options` - JSON object in which transmission options are defined (optional)
