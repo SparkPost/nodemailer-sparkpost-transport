@@ -1,10 +1,10 @@
 'use strict';
 
-const sinon = require('sinon');
-const expect = require('chai').expect;
-const nodemailer = require('nodemailer');
-const sparkPostTransport = require('../lib/sparkPostTransport.js');
-const pkg = require('../package.json');
+const sinon = require('sinon')
+, expect = require('chai').expect
+, nodemailer = require('nodemailer')
+, sparkPostTransport = require('../lib/sparkPostTransport.js')
+, pkg = require('../package.json');
 
 describe('SparkPost Transport', function() {
   const transport = sparkPostTransport({sparkPostApiKey: '12345678901234567890'});
@@ -64,7 +64,8 @@ describe('Send Method', function() {
         recipients: [{'email': 'john.doe@example.com', 'name': 'John Doe'}]
       });
 
-        // Create the modified options for use with the above stub test
+      // Create the modified options for use with the above stub test
+      // eslint-disable-next-line one-var
       const overloadedTransmission = {
         campaign_id: 'another_sample_campaign',
         tags: ['alternative-tag'],

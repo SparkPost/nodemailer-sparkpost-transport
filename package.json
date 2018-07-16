@@ -28,7 +28,7 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "eslint": "=3.0.0",
-    "eslint-config-sparkpost": "^1.0.1",
+    "eslint-config-sparkpost": "1.0.1",
     "mocha": "^3.1.2",
     "nodemailer": "^2.5.0",
     "sinon": "^1.17.6"
