@@ -24,6 +24,7 @@ describe('SparkPost Transport', function() {
   it('should be able to set options', function(done) {
     const transport = sparkPostTransport({
       sparkPostApiKey: '12345678901234567890',
+      endpoint: 'https://api.eu.sparkpost.com',
       campaign_id: 'sample_campaign',
       tags: ['new-account-notification'],
       metadata: {'source': 'event'},
@@ -33,6 +34,7 @@ describe('SparkPost Transport', function() {
       recipients: [{'email': 'john.doe@example.com', 'name': 'John Doe'}]
     });
 
+    expect(transport.endpoint).to.equal('https://api.eu.sparkpost.com');
     expect(transport.campaign_id).to.equal('sample_campaign');
     expect(transport.tags).to.deep.equal(['new-account-notification']);
     expect(transport.metadata).to.deep.equal({'source': 'event'});
