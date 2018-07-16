@@ -4,6 +4,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.1.0] - 2018/07/16
+
+### Added
+- Support for setting the SparkPost endpoint. Closes #20.
+
 ## [2.0.0] - 2017/01/06 *breaking*
 With this major release, we are now using the latest 2.x version of the node-sparkpost library.
 This removes support for versions of Node.js below 4.0.
