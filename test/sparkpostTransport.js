@@ -148,7 +148,11 @@ describe('Send Method', function() {
         to: 'kingcnut@to.example.com',
         subject: 'Modern Kinging',
         text: 'Edicts and surfeits...',
-        html: '<p>Edicts and surfeits...</p>'
+        html: '<p>Edicts and surfeits...</p>',
+        replyTo: 'other@to.example.com',
+        headers: {
+          'X-MSYS-SUBACCOUNT': 125
+        }
       };
 
       sptrans.sparkPostEmailClient.transmissions.send = sinon.stub().yields({
@@ -160,7 +164,7 @@ describe('Send Method', function() {
       });
     });
 
-    it('should accept basic nodemailer mail content fields', function(done) {
+    it('should accept nodemailer content fields', function(done) {
       transport.sendMail(mail, function() {
         const transBody = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0];
 
@@ -169,10 +173,39 @@ describe('Send Method', function() {
         expect(transBody.content.text).to.equal(mail.text);
         expect(transBody.content.subject).to.equal(mail.subject);
         expect(transBody.content.from).to.equal(mail.from);
+        expect(transBody.content.reply_to).to.equal(mail.replyTo);
+        expect(transBody.content.headers).to.equal(mail.headers);
         expect(transBody.recipients).to.have.length(1);
         expect(transBody.recipients[0]).to.have.keys('address');
         expect(transBody.recipients[0].address).to.be.a('string');
         expect(transBody.recipients[0].address).to.equal(mail.to);
+        done();
+      });
+    });
+
+    it('should format attachments', function(done) {
+      mail.attachments = [
+        {
+          filename: 'an_attachment',
+          content: 'Q29uZ3JhdHVsYXRpb25zLCB5b3UgY2FuIGJhc2U2NCBkZWNvZGUh',
+          contentType: 'application/pdf'
+        },
+        {
+          filename: 'another_attachment',
+          content: 'Q30uZ3JhdHVsYXRpb25zLCB5b3UgY2FuIGJhc2U2NCBkZWNvZGUh',
+          contentType: 'application/pdf'
+        }
+      ];
+
+      transport.sendMail(mail, function() {
+        const transBody = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0];
+
+        expect(transBody.content.attachments.length).to.equal(2);
+        expect(transBody.content.attachments[0]).to.deep.equal({
+          name: 'an_attachment',
+          type: 'application/pdf',
+          data: 'Q29uZ3JhdHVsYXRpb25zLCB5b3UgY2FuIGJhc2U2NCBkZWNvZGUh'
+        });
         done();
       });
     });
@@ -247,4 +280,3 @@ describe('Send Method', function() {
     });
   });
 });
-
