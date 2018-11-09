@@ -81,7 +81,7 @@ describe('Send Method', function() {
       };
 
       // Stub the send method of the SDK out
-      sinon.stub(transport, 'send', function(data, resolve) {
+      sinon.stub(transport, 'send').callsFake(function(data, resolve) {
         // Grab the transmission body from the send() payload for assertions
         expect(data.campaign_id).to.equal('another_sample_campaign');
         expect(data.tags).to.deep.equal(['alternative-tag']);
