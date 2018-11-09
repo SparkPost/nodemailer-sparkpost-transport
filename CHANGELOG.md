@@ -4,6 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.2.0] - 2018/11/9
+- Added attachments, reply to, and headers support. Closes #9
+- Upgraded Nodemailer version tested against and other test deps
+
 ## [2.1.0] - 2018/07/16
 
 ### Added
