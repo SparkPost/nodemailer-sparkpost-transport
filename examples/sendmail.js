@@ -1,9 +1,9 @@
 'use strict';
 
 /* eslint-disable no-console */
-const nodemailer = require('nodemailer')
-, sparkPostTransport = require('nodemailer-sparkpost-transport')
-, transporter = nodemailer.createTransport(sparkPostTransport({
+const nodemailer = require('nodemailer');
+const sparkPostTransport = require('nodemailer-sparkpost-transport');
+const transporter = nodemailer.createTransport(sparkPostTransport({
   'sparkPostApiKey': '<YOUR_API_KEY>',
   'options': {
     'open_tracking': true,
@@ -19,7 +19,7 @@ transporter.sendMail({
   subject: 'Nodemailer + SparkPost = Sheer Awe',
   text: 'Plain text email content',
   html: '<p>Richly <strong>marked up</strong> email content</p>'
-}, function(err, info) {
+}, (err, info) => {
   if (err) {
     console.error(err);
   } else {

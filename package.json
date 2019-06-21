@@ -4,7 +4,7 @@
   "description": "SparkPost transport for Nodemailer",
   "main": "lib/sparkPostTransport.js",
   "scripts": {
-    "pretest": "eslint examples lib test *.js",
+    "pretest": "eslint examples lib test",
     "test": "mocha",
     "postversion": "git push upstream && git push --tags upstream"
   },
@@ -27,10 +27,10 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "=3.0.0",
-    "eslint-config-sparkpost": "1.0.1",
+    "eslint": "^5.16.0",
+    "eslint-config-sparkpost": "^1.10.1",
     "mocha": "^5.2.0",
     "nodemailer": "^4.6.8",
-    "sinon": "^7.1.1"
+    "sinon": "^7.3.1"
   }
 }

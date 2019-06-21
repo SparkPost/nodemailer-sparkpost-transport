@@ -1,27 +1,29 @@
 'use strict';
 
-const sinon = require('sinon')
-, expect = require('chai').expect
-, nodemailer = require('nodemailer')
-, sparkPostTransport = require('../lib/sparkPostTransport.js')
-, pkg = require('../package.json');
+/* eslint-disable mocha/no-mocha-arrows, func-names */
 
-describe('SparkPost Transport', function() {
+const sinon = require('sinon');
+const expect = require('chai').expect;
+const nodemailer = require('nodemailer');
+const sparkPostTransport = require('../lib/sparkPostTransport.js');
+const pkg = require('../package.json');
+
+describe('SparkPost Transport', () => {
   const transport = sparkPostTransport({sparkPostApiKey: '12345678901234567890'});
 
-  it('should have a name and version property', function(done) {
+  it('should have a name and version property', (done) => {
     expect(transport).to.have.property('name', 'SparkPost');
     expect(transport).to.have.property('version', pkg.version);
     done();
   });
 
-  it('should expose a send method', function(done) {
+  it('should expose a send method', (done) => {
     expect(transport.send).to.exist;
     expect(transport.send).to.be.a('function');
     done();
   });
 
-  it('should be able to set options', function(done) {
+  it('should be able to set options', (done) => {
     const transport = sparkPostTransport({
       sparkPostApiKey: '12345678901234567890',
       endpoint: 'https://api.eu.sparkpost.com',
@@ -48,10 +50,10 @@ describe('SparkPost Transport', function() {
 
 });
 
-describe('Send Method', function() {
+describe('Send Method', () => {
 
-  describe('SP-centric mail structure', function() {
-    it('should be able to overload options at the transmission', function(done) {
+  describe('SP-centric mail structure', () => {
+    it('should be able to overload options at the transmission', (done) => {
       // Create the default transport
       const transport = sparkPostTransport({
         sparkPostApiKey: '12345678901234567890',
@@ -81,7 +83,7 @@ describe('Send Method', function() {
       };
 
       // Stub the send method of the SDK out
-      sinon.stub(transport, 'send').callsFake(function(data, resolve) {
+      sinon.stub(transport, 'send').callsFake((data, resolve) => {
         // Grab the transmission body from the send() payload for assertions
         expect(data.campaign_id).to.equal('another_sample_campaign');
         expect(data.tags).to.deep.equal(['alternative-tag']);
@@ -102,7 +104,7 @@ describe('Send Method', function() {
       });
 
       // Call the stub from above
-      transport.send(overloadedTransmission, function(data) {
+      transport.send(overloadedTransmission, (data) => {
         expect(data.results.id).to.exist;
         expect(data.results.total_rejected_recipients).to.exist;
         expect(data.results.total_accepted_recipients).to.exist;
@@ -113,16 +115,17 @@ describe('Send Method', function() {
     });
   });
 
-  describe('conventional nodemailer mail structure', function() {
+  describe('conventional nodemailer mail structure', () => {
     let sptrans
       , transport
       , mail
       , rcp1
       , rcp2;
 
+    // eslint-disable-next-line max-params
     function checkRecipientsFromFld(mail, infld, val, outfld, done) {
       mail[infld] = val;
-      transport.sendMail(mail, function() {
+      transport.sendMail(mail, () => {
         const transBody = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0];
 
         expect(transBody).to.include.keys(['recipients', 'content']);
@@ -133,7 +136,7 @@ describe('Send Method', function() {
       });
     }
 
-    beforeEach(function() {
+    beforeEach(() => {
       sptrans = sparkPostTransport({
         sparkPostApiKey: '12345678901234567890'
       });
@@ -164,8 +167,8 @@ describe('Send Method', function() {
       });
     });
 
-    it('should accept nodemailer content fields', function(done) {
-      transport.sendMail(mail, function() {
+    it('should accept nodemailer content fields', (done) => {
+      transport.sendMail(mail, () => {
         const transBody = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0];
 
         expect(transBody).to.have.keys(['recipients', 'content']);
@@ -183,7 +186,7 @@ describe('Send Method', function() {
       });
     });
 
-    it('should format attachments', function(done) {
+    it('should format attachments', (done) => {
       mail.attachments = [
         {
           filename: 'an_attachment',
@@ -197,7 +200,7 @@ describe('Send Method', function() {
         }
       ];
 
-      transport.sendMail(mail, function() {
+      transport.sendMail(mail, () => {
         const transBody = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0];
 
         expect(transBody.content.attachments.length).to.equal(2);
@@ -210,13 +213,13 @@ describe('Send Method', function() {
       });
     });
 
-    it('should accept raw mail structure', function(done) {
+    it('should accept raw mail structure', (done) => {
       delete mail.subject;
       delete mail.text;
       delete mail.html;
       delete mail.from;
       mail.raw = 'rawmsg';
-      transport.sendMail(mail, function() {
+      transport.sendMail(mail, () => {
         const transBody = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0];
 
         expect(transBody).to.have.keys(['recipients', 'content']);
@@ -229,22 +232,22 @@ describe('Send Method', function() {
       });
     });
 
-    it('should accept from as a string', function(done) {
+    it('should accept from as a string', (done) => {
       mail.from = 'me@here.com';
-      transport.sendMail(mail, function() {
+      transport.sendMail(mail, () => {
         const trans = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0];
         expect(trans.content.from).to.be.a('string');
         done();
       });
     });
 
-    it('should accept from as an object', function(done) {
+    it('should accept from as an object', (done) => {
       mail.from = {
         name: 'Me',
         address: 'me@here.com'
       };
 
-      transport.sendMail(mail, function() {
+      transport.sendMail(mail, () => {
         const trans = sptrans.sparkPostEmailClient.transmissions.send.firstCall.args[0];
         expect(trans.content.from).to.be.an('object');
         expect(trans.content.from).to.have.property('name');
@@ -255,27 +258,27 @@ describe('Send Method', function() {
       });
     });
 
-    it('should accept to as an array', function(done) {
+    it('should accept to as an array', (done) => {
       checkRecipientsFromFld(mail, 'to', [rcp1, rcp2], 'recipients', done);
     });
 
-    it('should accept to as a string', function(done) {
+    it('should accept to as a string', (done) => {
       checkRecipientsFromFld(mail, 'to', [rcp1, rcp2].join(','), 'recipients', done);
     });
 
-    it('should accept cc as an array', function(done) {
+    it('should accept cc as an array', (done) => {
       checkRecipientsFromFld(mail, 'cc', [rcp1, rcp2], 'cc', done);
     });
 
-    it('should accept cc as a string', function(done) {
+    it('should accept cc as a string', (done) => {
       checkRecipientsFromFld(mail, 'cc', [rcp1, rcp2].join(','), 'cc', done);
     });
 
-    it('should accept bcc as an array', function(done) {
+    it('should accept bcc as an array', (done) => {
       checkRecipientsFromFld(mail, 'bcc', [rcp1, rcp2], 'bcc', done);
     });
 
-    it('should accept bcc as a string', function(done) {
+    it('should accept bcc as a string', (done) => {
       checkRecipientsFromFld(mail, 'bcc', [rcp1, rcp2].join(','), 'bcc', done);
     });
   });
