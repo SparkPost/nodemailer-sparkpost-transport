@@ -30,7 +30,7 @@
     "eslint": "=3.0.0",
     "eslint-config-sparkpost": "1.0.1",
     "mocha": "^5.2.0",
-    "nodemailer": "^4.6.8",
+    "nodemailer": "^6.4.16",
     "sinon": "^7.1.1"
   }
 }
